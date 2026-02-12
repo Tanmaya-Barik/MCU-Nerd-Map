@@ -9,17 +9,18 @@
             --bg-color: #050505;
             --font-family: 'Courier New', monospace;
             
-            /* Infinity Stone Phase Colors */
+            /* Phase Colors */
             --p1-bg: #001233; --p1-border: #007BFF; /* Space */
             --p2-bg: #330000; --p2-border: #DC3545; /* Reality */
             --p3-bg: #002200; --p3-border: #28A745; /* Time */
             --p4-bg: #220033; --p4-border: #9370DB; /* Power/Multiverse */
-            --p5-bg: #331A00; --p5-border: #FF8C00; /* Soul/Orange */
+            --p5-bg: #331A00; --p5-border: #FF8C00; /* Soul/Doomsday Build */
+            --p6-bg: #003333; --p6-border: #00FFFF; /* Mind/Secret Wars (Cyan/Tech) */
             
             /* Specific Types */
-            --shows-bg: #332200; --shows-border: #FFC107; /* Mind Stone / Series */
-            --movie-bg: rgba(15, 15, 15, 0.85); --movie-border: #555555; 
-            --postcredit-bg: rgba(0, 43, 54, 0.85); --postcredit-border: #17A2B8;
+            --shows-bg: #2b1d00; --shows-border: #FFC107; /* Gold */
+            --movie-bg: rgba(15, 15, 15, 0.9); --movie-border: #555555; 
+            --postcredit-bg: rgba(0, 43, 54, 0.9); --postcredit-border: #17A2B8;
             
             /* Core */
             --core-red: #E23636;
@@ -48,8 +49,8 @@
 
         /* Cosmic Stars Background Effect */
         #stars {
-            position: absolute; top: -2500px; left: -2500px;
-            width: 10000px; height: 10000px;
+            position: absolute; top: -5000px; left: -5000px;
+            width: 20000px; height: 20000px;
             background-image: 
                 radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
@@ -63,14 +64,14 @@
 
         svg#connections {
             position: absolute; top: 0; left: 0;
-            width: 5000px; height: 5000px;
+            width: 10000px; height: 10000px;
             pointer-events: none; z-index: 1;
         }
 
-        /* Node Styling - Glassmorphism for intentional overlap */
+        /* Node Styling - Glassmorphism */
         .node {
             position: absolute;
-            width: 250px;
+            width: 260px;
             padding: 15px;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
@@ -79,28 +80,32 @@
             transition: box-shadow 0.2s ease, filter 0.2s ease, transform 0.2s ease;
             cursor: pointer; box-sizing: border-box;
             z-index: 10; border-radius: 8px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            /* Center the node exactly on its coordinates */
+            transform: translate(-50%, -50%);
         }
 
-        /* Bring hovered card to the absolute front */
+        /* Hover Effect */
         .node:hover, .node:active { 
             z-index: 9999 !important; 
             filter: brightness(1.3);
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+            /* Maintain centering while scaling */
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
         }
 
         .node h3 {
-            margin: 0 0 8px 0; font-size: 15px;
+            margin: 0 0 8px 0; font-size: 14px;
             pointer-events: none; text-transform: uppercase; letter-spacing: 1px;
             text-shadow: 0 0 5px rgba(255,255,255,0.5);
+            line-height: 1.3;
         }
 
         .node ul {
             text-align: left; padding-left: 18px; margin: 0;
-            font-size: 13px; line-height: 1.4;
+            font-size: 12px; line-height: 1.4;
             display: none; pointer-events: none; color: #ddd;
         }
         
@@ -108,32 +113,33 @@
 
         /* Perfect Circle Core Hub */
         .core-hub {
-            width: 300px; height: 300px; 
-            min-width: 300px; min-height: 300px; 
+            width: 350px; height: 350px; 
+            min-width: 350px; min-height: 350px; 
             border-radius: 50% !important;
             aspect-ratio: 1 / 1; 
             flex-shrink: 0;
-            background: #000; border: 5px solid var(--core-red);
-            box-shadow: 0 0 50px var(--core-red), inset 0 0 30px var(--core-red);
+            background: #000; border: 6px solid var(--core-red);
+            box-shadow: 0 0 60px var(--core-red), inset 0 0 40px var(--core-red);
             z-index: 50; display: flex; justify-content: center; align-items: center;
         }
         .core-hub h1 {
             color: #FFF; text-shadow: 0 0 10px #FFF, 0 0 20px var(--core-red);
-            font-size: 24px; text-transform: uppercase; letter-spacing: 2px; margin: 0;
+            font-size: 26px; text-transform: uppercase; letter-spacing: 2px; margin: 0;
         }
 
         /* Node Colors */
-        .p1 { background: rgba(0,18,51,0.85); border-color: var(--p1-border); box-shadow: 0 0 15px var(--p1-border); }
-        .p2 { background: rgba(51,0,0,0.85); border-color: var(--p2-border); box-shadow: 0 0 15px var(--p2-border); }
-        .p3 { background: rgba(0,34,0,0.85); border-color: var(--p3-border); box-shadow: 0 0 15px var(--p3-border); }
-        .p4 { background: rgba(34,0,51,0.85); border-color: var(--p4-border); box-shadow: 0 0 15px var(--p4-border); }
-        .p5 { background: rgba(51,26,0,0.85); border-color: var(--p5-border); box-shadow: 0 0 15px var(--p5-border); }
+        .p1 { background: rgba(0,18,51,0.9); border-color: var(--p1-border); box-shadow: 0 0 15px var(--p1-border); }
+        .p2 { background: rgba(51,0,0,0.9); border-color: var(--p2-border); box-shadow: 0 0 15px var(--p2-border); }
+        .p3 { background: rgba(0,34,0,0.9); border-color: var(--p3-border); box-shadow: 0 0 15px var(--p3-border); }
+        .p4 { background: rgba(34,0,51,0.9); border-color: var(--p4-border); box-shadow: 0 0 15px var(--p4-border); }
+        .p5 { background: rgba(51,26,0,0.9); border-color: var(--p5-border); box-shadow: 0 0 15px var(--p5-border); }
+        .p6 { background: rgba(0,51,51,0.9); border-color: var(--p6-border); box-shadow: 0 0 15px var(--p6-border); }
         
-        .shows { background: rgba(51,34,0,0.85); border-color: var(--shows-border); box-shadow: 0 0 15px var(--shows-border); }
+        .shows { background: rgba(43,29,0,0.9); border-color: var(--shows-border); box-shadow: 0 0 15px var(--shows-border); }
         .movie { background: var(--movie-bg); border-color: var(--movie-border); box-shadow: 0 0 8px var(--movie-border); }
         
         .postcredit { 
-            width: 210px;
+            width: 220px;
             background: var(--postcredit-bg); 
             border: 2px dashed var(--postcredit-border); 
             box-shadow: 0 0 8px var(--postcredit-border); 
@@ -155,7 +161,7 @@
         .legend-widget {
             position: absolute;
             top: 20px; left: 20px;
-            width: 310px;
+            width: 320px;
             max-width: 90vw;
             background: rgba(10, 10, 10, 0.98);
             border: 1px solid #444;
@@ -191,32 +197,27 @@
 
         .legend-body {
             padding: 15px;
-            display: flex; flex-direction: column; gap: 10px;
+            display: flex; flex-direction: column; gap: 8px;
         }
 
         .legend-widget.minimized .legend-body { display: none; }
 
-        .legend-item { display: flex; align-items: center; font-size: 14px; color: #ddd; white-space: nowrap; }
-        .dot { width: 16px; height: 16px; margin-right: 12px; border: 1px solid #fff; border-radius: 3px; flex-shrink:0; }
+        .legend-item { display: flex; align-items: center; font-size: 13px; color: #ddd; white-space: nowrap; }
+        .dot { width: 14px; height: 14px; margin-right: 12px; border: 1px solid #fff; border-radius: 3px; flex-shrink:0; }
 
         .instructions {
             margin-top: 10px; padding-top: 10px;
             border-top: 1px solid #333;
-            font-size: 13px; color: #aaa; line-height: 1.5;
+            font-size: 12px; color: #aaa; line-height: 1.5;
             display: block; 
         }
         .instructions ul { 
             padding-left: 20px; 
-            margin: 8px 0 0 0; 
+            margin: 5px 0 0 0; 
             display: block;
             list-style-type: disc;
         }
-        .instructions li {
-            display: list-item;
-            text-align: left;
-            margin-bottom: 5px;
-            white-space: normal; 
-        }
+        .instructions li { display: list-item; text-align: left; margin-bottom: 3px; }
 
         /* Zoom/Center Controls */
         .controls {
@@ -238,19 +239,18 @@
         @media (max-width: 768px) {
             .controls { flex-direction: row; right: 15px; bottom: 15px; }
             .legend-widget { width: 280px; left: 15px; top: 15px;}
-            .node { width: 220px; }
-            .core-hub { width: 250px; height: 250px; min-width: 250px; min-height: 250px; }
-            .core-hub h1 { font-size: 20px; }
+            .node { width: 230px; }
+            .core-hub { width: 260px; height: 260px; min-width: 260px; min-height: 260px; }
+            .core-hub h1 { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
     <div class="ui-layer">
-        <!-- Draggable & Minimizable Legend -->
         <div class="legend-widget" id="legend">
             <div class="legend-header" id="legend-header">
-                <span class="title">S.H.I.E.L.D. Legend</span>
+                <span class="title">S.H.I.E.L.D. Database</span>
                 <button class="minimize-btn" id="min-btn">−</button>
             </div>
             <div class="legend-body">
@@ -258,16 +258,17 @@
                 <div class="legend-item"><div class="dot" style="background:var(--p2-bg); border-color:var(--p2-border);"></div>Phase 2 (Reality)</div>
                 <div class="legend-item"><div class="dot" style="background:var(--p3-bg); border-color:var(--p3-border);"></div>Phase 3 (Time)</div>
                 <div class="legend-item"><div class="dot" style="background:var(--p4-bg); border-color:var(--p4-border);"></div>Phase 4 (Multiverse)</div>
-                <div class="legend-item"><div class="dot" style="background:var(--p5-bg); border-color:var(--p5-border);"></div>Phase 5 (Doomsday)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p5-bg); border-color:var(--p5-border);"></div>Phase 5 (Doomsday Build)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p6-bg); border-color:var(--p6-border);"></div>Phase 6 (Secret Wars)</div>
                 <div class="legend-item"><div class="dot" style="background:var(--shows-bg); border-color:var(--shows-border);"></div>Disney+ Series</div>
-                <div class="legend-item"><div class="dot" style="background:var(--postcredit-bg); border-color:var(--postcredit-border); border-style:dashed;"></div>Post-Credit / Lore</div>
+                <div class="legend-item"><div class="dot" style="background:var(--postcredit-bg); border-color:var(--postcredit-border); border-style:dashed;"></div>Post-Credit / Plot Setup</div>
                 
                 <div class="instructions">
-                    <strong>Navigation Commands:</strong>
+                    <strong>Navigation:</strong>
                     <ul>
-                        <li><strong>Swipe/Drag</strong> the background to pan around.</li>
-                        <li><strong>Pinch/Scroll</strong> to zoom in and out.</li>
-                        <li><strong>Tap/Click</strong> on any node to expand it.</li>
+                        <li><strong>Drag</strong> background to pan</li>
+                        <li><strong>Pinch/Scroll</strong> to zoom</li>
+                        <li><strong>Click</strong> nodes to expand</li>
                     </ul>
                 </div>
             </div>
@@ -290,145 +291,141 @@
     </div>
 
 <script>
-/* ---------------- COMPREHENSIVE MCU DATA (FIXED POST CREDITS) ---------------- */
+/* ---------------- COMPREHENSIVE MCU DATA (6 PHASES) ---------------- */
 const mcuData = {
     id: "core", type: "core", title: "Marvel Cinematic<br>Universe",
     children: [
         // PHASE 1
         { id: "p1", type: "phase", styleClass: "p1", title: "Phase 1<br>Avengers Assembled", children: [
-            { id: "m1", type: "sub", styleClass: "movie p1", title: "Iron Man", details: ["Tony Stark escapes", "Mark III Armor"], children: [
-                { id: "c1", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Nick Fury: Avenger Initiative"] }]},
-            { id: "m2", type: "sub", styleClass: "movie p1", title: "The Incredible Hulk", details: ["Bruce Banner on run", "Abomination"], children: [
-                { id: "c2", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tony Stark meets Ross"] }]},
-            { id: "m3", type: "sub", styleClass: "movie p1", title: "Iron Man 2", details: ["Palladium poisoning", "Whiplash, Black Widow"], children: [
-                { id: "c3", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Coulson finds Mjolnir in NM"] }]},
-            { id: "m4", type: "sub", styleClass: "movie p1", title: "Thor", details: ["Banished to Earth", "Loki's deception"], children: [
-                { id: "c4", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Selvig & Tesseract, controlled by Loki"] }]},
-            { id: "m5", type: "sub", styleClass: "movie p1", title: "Captain America: TFA", details: ["Steve Rogers", "Red Skull & Tesseract"], children: [
-                { id: "c5", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Steve wakes in modern day NY"] }]},
-            { id: "m6", type: "sub", styleClass: "movie p1", title: "The Avengers", details: ["Battle of New York", "Loki's Scepter"], children: [
-                { id: "c6", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos Revealed", "Eating Shawarma"] }]}
+            { id: "m1", type: "sub", styleClass: "movie p1", title: "Iron Man", details: ["Tony Stark", "Arc Reactor"], children: [
+                { id: "c1", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Nick Fury discusses the Avenger Initiative"] }]},
+            { id: "m2", type: "sub", styleClass: "movie p1", title: "The Incredible Hulk", details: ["Bruce Banner", "Abomination"], children: [
+                { id: "c2", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tony Stark tells Ross: 'We're putting a team together'"] }]},
+            { id: "m3", type: "sub", styleClass: "movie p1", title: "Iron Man 2", details: ["War Machine", "Black Widow"], children: [
+                { id: "c3", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Coulson finds Mjolnir in New Mexico"] }]},
+            { id: "m4", type: "sub", styleClass: "movie p1", title: "Thor", details: ["Asgard", "Loki's Scheme"], children: [
+                { id: "c4", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Selvig meets Fury; Loki controls Selvig's mind"] }]},
+            { id: "m5", type: "sub", styleClass: "movie p1", title: "Captain America: TFA", details: ["Steve Rogers", "The Tesseract"], children: [
+                { id: "c5", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Steve wakes up in modern-day Times Square"] }]},
+            { id: "m6", type: "sub", styleClass: "movie p1", title: "The Avengers", details: ["Battle of NY", "Avengers Unite"], children: [
+                { id: "c6", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos smiles: 'To challenge them is to court death'"] }]}
         ]},
         
         // PHASE 2
         { id: "p2", type: "phase", styleClass: "p2", title: "Phase 2<br>Age of Miracles", children: [
-            { id: "m7", type: "sub", styleClass: "movie p2", title: "Iron Man 3", details: ["PTSD", "The Mandarin/Extremis"], children: [
-                { id: "c7", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tony venting to Bruce Banner"] }]},
-            { id: "m8", type: "sub", styleClass: "movie p2", title: "Thor: The Dark World", details: ["Malekith", "The Aether"], children: [
-                { id: "c8", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Aether given to The Collector", "Thor returns to Jane"] }]},
-            { id: "m9", type: "sub", styleClass: "movie p2", title: "Captain America: TWS", details: ["Fall of SHIELD", "Hydra revealed"], children: [
-                { id: "c9", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Baron Strucker reveals Twins", "Bucky at Smithsonian"] }]},
-            { id: "m10", type: "sub", styleClass: "movie p2", title: "Guardians of the Galaxy", details: ["Star-Lord, Groot", "The Orb (Power Stone)"], children: [
-                { id: "c10", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Howard the Duck intro", "Dancing Baby Groot"] }]},
-            { id: "m11", type: "sub", styleClass: "movie p2", title: "Avengers: Age of Ultron", details: ["Ultron created", "Vision born"], children: [
-                { id: "c11", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos dons Infinity Gauntlet: 'I'll do it myself'"] }]},
-            { id: "m12", type: "sub", styleClass: "movie p2", title: "Ant-Man", details: ["Scott Lang heist", "Yellowjacket"], children: [
-                { id: "c12", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Hope gets Wasp suit", "Cap & Falcon find Bucky trapped"] }]}
+            { id: "m7", type: "sub", styleClass: "movie p2", title: "Iron Man 3", details: ["Extremis", "Clean Slate Protocol"], children: [
+                { id: "c7", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tony treats Bruce Banner as a therapist"] }]},
+            { id: "m8", type: "sub", styleClass: "movie p2", title: "Thor: The Dark World", details: ["Reality Stone", "Malekith"], children: [
+                { id: "c8", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Volstagg gives Aether to The Collector"] }]},
+            { id: "m9", type: "sub", styleClass: "movie p2", title: "Captain America: TWS", details: ["Fall of SHIELD", "Winter Soldier"], children: [
+                { id: "c9", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Strucker shows the Twins (Wanda & Pietro)"] }]},
+            { id: "m10", type: "sub", styleClass: "movie p2", title: "Guardians of the Galaxy", details: ["Power Stone", "Star-Lord"], children: [
+                { id: "c10", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Howard the Duck drinks with The Collector"] }]},
+            { id: "m11", type: "sub", styleClass: "movie p2", title: "Avengers: Age of Ultron", details: ["Ultron", "Sokovia"], children: [
+                { id: "c11", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos grabs the Gauntlet: 'Fine, I'll do it myself'"] }]},
+            { id: "m12", type: "sub", styleClass: "movie p2", title: "Ant-Man", details: ["Scott Lang", "Pym Particles"], children: [
+                { id: "c12", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Falcon and Cap find Bucky; mention 'a guy' (Ant-Man)"] }]}
         ]},
 
         // PHASE 3
         { id: "p3", type: "phase", styleClass: "p3", title: "Phase 3<br>The Infinity Saga", children: [
-            { id: "m13", type: "sub", styleClass: "movie p3", title: "Captain America: Civil War", details: ["Sokovia Accords", "Zemo fractures Avengers"], children: [
-                { id: "c13", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Bucky in Wakanda freeze", "Spidey Signal"] }]},
-            { id: "m14", type: "sub", styleClass: "movie p3", title: "Doctor Strange", details: ["Kamar-Taj", "Time Stone"], children: [
-                { id: "c14", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thor needs help finding Odin", "Mordo goes rogue"] }]},
-            { id: "m15", type: "sub", styleClass: "movie p3", title: "GotG Vol. 2", details: ["Ego the Planet", "Mantis"], children: [
-                { id: "c15", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Kraglin arrow", "Adam Warlock cocoon", "Teen Groot", "Stan Lee Watchers"] }]},
-            { id: "m16", type: "sub", styleClass: "movie p3", title: "Spider-Man: Homecoming", details: ["Vulture", "Iron Man mentors"], children: [
-                { id: "c16", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Vulture protects Peter's ID", "Cap PSA on Patience"] }]},
-            { id: "m17", type: "sub", styleClass: "movie p3", title: "Thor: Ragnarok", details: ["Hela, Destruction of Asgard", "Planet Sakaar"], children: [
-                { id: "c17", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos' massive ship approaches", "Grandmaster survives"] }]},
-            { id: "m18", type: "sub", styleClass: "movie p3", title: "Black Panther", details: ["Wakanda revealed", "Killmonger"], children: [
-                { id: "c18", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Wakanda addresses UN", "Bucky is the White Wolf"] }]},
-            { id: "m19", type: "sub", styleClass: "movie p3", title: "Avengers: Infinity War", details: ["Thanos collects stones", "The Snap"], children: [
+            { id: "m13", type: "sub", styleClass: "movie p3", title: "Civil War", details: ["Sokovia Accords", "Team Cap vs Iron"], children: [
+                { id: "c13", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Bucky in Wakanda cryo; Spidey signal"] }]},
+            { id: "m14", type: "sub", styleClass: "movie p3", title: "Doctor Strange", details: ["Time Stone", "Dormammu"], children: [
+                { id: "c14", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Strange helps Thor find Odin"] }]},
+            { id: "m15", type: "sub", styleClass: "movie p3", title: "GotG Vol. 2", details: ["Ego", "Yondu's Death"], children: [
+                { id: "c15", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Adam Warlock cocoon revealed"] }]},
+            { id: "m16", type: "sub", styleClass: "movie p3", title: "Spider-Man: Homecoming", details: ["Vulture", "Stark Internship"], children: [
+                { id: "c16", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Vulture protects Peter's ID in prison"] }]},
+            { id: "m17", type: "sub", styleClass: "movie p3", title: "Thor: Ragnarok", details: ["Hela", "Asgard Destroyed"], children: [
+                { id: "c17", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos' ship Sanctuary II intercepts the Ark"] }]},
+            { id: "m18", type: "sub", styleClass: "movie p3", title: "Black Panther", details: ["Killmonger", "Wakanda Open"], children: [
+                { id: "c18", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Bucky (White Wolf) healed in Wakanda"] }]},
+            { id: "m19", type: "sub", styleClass: "movie p3", title: "Infinity War", details: ["The Snap", "Thanos Wins"], children: [
                 { id: "c19", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Fury pages Captain Marvel before dusting"] }]},
-            { id: "m20", type: "sub", styleClass: "movie p3", title: "Ant-Man and the Wasp", details: ["Quantum Realm rescue", "Ghost"], children: [
-                { id: "c20", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Hank, Janet, Hope dust while Scott is in Quantum Realm"] }]},
-            { id: "m21", type: "sub", styleClass: "movie p3", title: "Captain Marvel", details: ["Kree vs Skrull", "Carol Danvers origins"], children: [
-                { id: "c21", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Carol meets Avengers in 2018", "Goose coughs up Tesseract"] }]},
-            { id: "m22", type: "sub", styleClass: "movie p3", title: "Avengers: Endgame", details: ["Time Heist", "Tony's Sacrifice"], children: [
-                { id: "c22", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["(Audio Only) Clanging of Iron Man Mark 1 armor being built"] }]},
-            { id: "m23", type: "sub", styleClass: "movie p3", title: "Spider-Man: Far From Home", details: ["Mysterio, EDITH", "Post-Blip trauma"], children: [
-                { id: "c23", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["J. Jonah Jameson reveals Peter's ID", "Nick Fury was Talos"] }]}
+            { id: "m20", type: "sub", styleClass: "movie p3", title: "Ant-Man & The Wasp", details: ["Quantum Realm", "Ghost"], children: [
+                { id: "c20", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Pym family dusts; Scott trapped in Quantum Realm"] }]},
+            { id: "m21", type: "sub", styleClass: "movie p3", title: "Captain Marvel", details: ["Kree/Skrull War", "Tesseract"], children: [
+                { id: "c21", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Carol appears at Avengers HQ: 'Where's Fury?'"] }]},
+            { id: "m22", type: "sub", styleClass: "movie p3", title: "Avengers: Endgame", details: ["Time Heist", "Tony's Snap"], children: [
+                { id: "c22", type: "side", styleClass: "postcredit", title: "Lore", details: ["Sound of Tony Stark forging the first armor (Legacy)"] }]},
+            { id: "m23", type: "sub", styleClass: "movie p3", title: "Far From Home", details: ["Mysterio", "EDITH"], children: [
+                { id: "c23", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["J. Jonah Jameson reveals Spider-Man is Peter Parker"] }]}
         ]},
 
         // PHASE 4
         { id: "p4", type: "phase", styleClass: "p4", title: "Phase 4<br>The Multiverse Begins", children: [
-            { id: "m24", type: "sub", styleClass: "movie shows", title: "WandaVision", details: ["Westview Hex", "Scarlet Witch born"], children: [
-                { id: "c24", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Monica meets Skrull", "Wanda studies Darkhold in isolation"] }]},
-            { id: "m25", type: "sub", styleClass: "movie shows", title: "Falcon & Winter Soldier", details: ["Sam becomes Cap", "Flag Smashers"], children: [
-                { id: "c25", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Sharon Carter pardoned, revealed as Power Broker"] }]},
-            { id: "m26", type: "sub", styleClass: "movie shows", title: "Loki S1", details: ["TVA, Sylvie", "He Who Remains"], children: [
-                { id: "c26", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Loki arrives in altered TVA with Kang statue"] }]},
-            { id: "m27", type: "sub", styleClass: "movie p4", title: "Black Widow", details: ["Red Room destroyed", "Yelena Belova"], children: [
-                { id: "c27", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Val tells Yelena that Hawkeye killed Natasha"] }]},
-            { id: "m28", type: "sub", styleClass: "movie shows", title: "What If...? S1", details: ["The Watcher", "Multiverse Variants"], children: [
-                { id: "c28", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Captain Carter finds Hydra Stomper"] }]},
-            { id: "m29", type: "sub", styleClass: "movie p4", title: "Shang-Chi", details: ["Ten Rings", "Ta Lo"], children: [
-                { id: "c29", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Bruce & Carol analyze Rings beacon", "Xialing takes over Ten Rings"] }]},
-            { id: "m30", type: "sub", styleClass: "movie p4", title: "Eternals", details: ["Celestials stopped", "Deviants"], children: [
-                { id: "c30", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Eros (Starfox) appears", "Blade speaks to Dane Whitman"] }]},
-            { id: "m31", type: "sub", styleClass: "movie shows", title: "Hawkeye", details: ["Kate Bishop", "Kingpin returns"], children: [
-                { id: "c31", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Rogers: The Musical full performance"] }]},
-            { id: "m32", type: "sub", styleClass: "movie p4", title: "Spider-Man: No Way Home", details: ["Multiverse Villains", "3 Spideys unite"], children: [
-                { id: "c32", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tom Hardy's Venom leaves symbiote piece behind"] }]},
-            { id: "m33", type: "sub", styleClass: "movie shows", title: "Moon Knight", details: ["Marc Spector", "Egyptian Gods"], children: [
-                { id: "c33", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Arthur Harrow assassinated by Jake Lockley"] }]},
-            { id: "m34", type: "sub", styleClass: "movie p4", title: "Doctor Strange in the Multiverse of Madness", details: ["America Chavez", "Scarlet Witch attacks"], children: [
-                { id: "c34", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Clea arrives to fix incursion", "Pizza Poppa stops punching himself"] }]},
-            { id: "m35", type: "sub", styleClass: "movie shows", title: "Ms. Marvel", details: ["Kamala Khan", "Bangle powers"], children: [
-                { id: "c35", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Kamala swaps places with Captain Marvel"] }]},
-            { id: "m36", type: "sub", styleClass: "movie p4", title: "Thor: Love and Thunder", details: ["Gorr the God Butcher", "Mighty Thor (Jane)"], children: [
-                { id: "c36", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Zeus unleashes Hercules", "Jane arrives in Valhalla"] }]},
-            { id: "m37", type: "sub", styleClass: "movie shows", title: "She-Hulk", details: ["Jennifer Walters", "Hulk King", "Daredevil"], children: [
-                { id: "c37", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Wong breaks Emil Blonsky out of prison"] }]},
-            { id: "m38", type: "sub", styleClass: "movie p4", title: "Black Panther: Wakanda Forever", details: ["Shuri becomes BP", "Namor & Talokan"], children: [
-                { id: "c38", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Shuri meets T'Challa's son, Toussaint"] }]}
+            { id: "m24", type: "sub", styleClass: "movie shows", title: "WandaVision", details: ["Westview", "Scarlet Witch"], children: [
+                { id: "c24", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Wanda hears her children while reading the Darkhold"] }]},
+            { id: "m25", type: "sub", styleClass: "movie shows", title: "Falcon & Winter Soldier", details: ["Sam is Cap", "Power Broker"], children: [
+                { id: "c25", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Sharon Carter pardoned; selling secrets"] }]},
+            { id: "m26", type: "sub", styleClass: "movie shows", title: "Loki S1", details: ["He Who Remains", "Timeline Breaks"], children: [
+                { id: "c26", type: "side", styleClass: "postcredit", title: "Lore", details: ["Loki lands in a Kang-ruled TVA"] }]},
+            { id: "m27", type: "sub", styleClass: "movie p4", title: "Black Widow", details: ["Red Room", "Yelena"], children: [
+                { id: "c27", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Val targets Hawkeye for Yelena"] }]},
+            { id: "m29", type: "sub", styleClass: "movie p4", title: "Shang-Chi", details: ["Ten Rings", "Dweller in Darkness"], children: [
+                { id: "c29", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Beacon signal detected from the Rings"] }]},
+            { id: "m30", type: "sub", styleClass: "movie p4", title: "Eternals", details: ["Emergence Stopped", "Arishem"], children: [
+                { id: "c30", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Eros (Starfox) arrives to help"] }]},
+            { id: "m32", type: "sub", styleClass: "movie p4", title: "No Way Home", details: ["3 Spideys", "Memory Wipe"], children: [
+                { id: "c32", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Venom leaves a Symbiote piece in MCU"] }]},
+            { id: "m34", type: "sub", styleClass: "movie p4", title: "Doctor Strange 2", details: ["Incursions", "Wanda's Rampage"], children: [
+                { id: "c34", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Clea recruits Strange to fix Incursions"] }]},
+            { id: "m36", type: "sub", styleClass: "movie p4", title: "Love and Thunder", details: ["Gorr", "Jane's Death"], children: [
+                { id: "c36", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Zeus sends Hercules to kill Thor"] }]},
+            { id: "m38", type: "sub", styleClass: "movie p4", title: "Wakanda Forever", details: ["Namor", "Shuri is BP"], children: [
+                { id: "c38", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Shuri meets T'Challa's son"] }]}
         ]},
 
         // PHASE 5
-        { id: "p5", type: "phase", styleClass: "p5", title: "Phase 5<br>The Doomsday Build", children: [
-            { id: "m39", type: "sub", styleClass: "movie p5", title: "Ant-Man: Quantumania", details: ["Kang the Conqueror", "MODOK"], children: [
-                { id: "c39", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Council of Kangs assembles", "Loki & Mobius find Victor Timely"] }]},
-            { id: "m40", type: "sub", styleClass: "movie p5", title: "Guardians of the Galaxy Vol. 3", details: ["High Evolutionary", "Rocket's past"], children: [
-                { id: "c40", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["New GotG team with Rocket leading", "The Legendary Star-Lord Will Return"] }]},
-            { id: "m41", type: "sub", styleClass: "movie shows", title: "Secret Invasion", details: ["Gravik", "G'iah becomes Super Skrull"], children: [
-                { id: "c41", type: "side", styleClass: "postcredit", title: "Lore", details: ["President Ritson declares war on off-worlders"] }]},
-            { id: "m42", type: "sub", styleClass: "movie shows", title: "Loki S2", details: ["Temporal Loom fails", "God Loki"], children: [
-                { id: "c42", type: "side", styleClass: "postcredit", title: "Lore", details: ["Loki becomes the anchor of the Multiverse Tree"] }]},
-            { id: "m43", type: "sub", styleClass: "movie p5", title: "The Marvels", details: ["Carol, Kamala, Monica unite", "Dar-Benn"], children: [
-                { id: "c43", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Monica wakes up in X-Men universe with Beast & Binary", "Kamala recruits Kate Bishop"] }]},
-            { id: "m44", type: "sub", styleClass: "movie shows", title: "What If...? S2", details: ["Kahhori", "Strange Supreme"], children: [
-                { id: "c44", type: "side", styleClass: "postcredit", title: "Lore", details: ["Watcher shows Yggdrasil (Loki)"] }]},
-            { id: "m45", type: "sub", styleClass: "movie shows", title: "Echo", details: ["Maya Lopez", "Kingpin survives"], children: [
-                { id: "c45", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Fisk watches NY Mayoral race news, planning his campaign"] }]},
-            { id: "m46", type: "sub", styleClass: "movie p5", title: "Deadpool & Wolverine", details: ["TVA recruits Wade", "Logan returns", "Cassandra Nova"], children: [
-                { id: "c46", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Deadpool proves Johnny Storm actually said those horrible things"] }]},
-            { id: "m47", type: "sub", styleClass: "movie shows", title: "Agatha All Along", details: ["Witches' Road", "Teen is Wiccan"], children: [
-                { id: "c47", type: "side", styleClass: "postcredit", title: "Lore", details: ["Agatha becomes a ghost guide for Billy"] }]},
-            { id: "m48", type: "sub", styleClass: "movie p5", title: "Captain America: Brave New World", details: ["Sam Wilson Cap", "Red Hulk", "Adamantium"], children: [
-                { id: "c48", type: "side", styleClass: "postcredit", title: "Lore", details: ["President Ross is locked in the Raft; Val pays him a visit"] }]},
-            { id: "m49", type: "sub", styleClass: "movie shows", title: "Daredevil: Born Again", details: ["Matt Murdock vs Mayor Fisk"], children: [
-                { id: "c49", type: "side", styleClass: "postcredit", title: "Lore", details: ["Fisk consolidates power; Punisher continues his crusade"] }]},
-            { id: "m50", type: "sub", styleClass: "movie p5", title: "Thunderbolts*", details: ["Yelena, Bucky, US Agent", "Sentry"], children: [
-                { id: "c50", type: "side", styleClass: "postcredit", title: "Lore", details: ["The team goes rogue, severing ties with Valentina"] }]},
-            { id: "m53", type: "sub", styleClass: "movie p5", title: "The Fantastic Four: First Steps", details: ["Reed, Sue, Johnny, Ben", "Retro-Futuristic 60s", "Galactus"], children: [
-                { id: "c53", type: "side", styleClass: "postcredit", title: "Lore", details: ["The team creates a bridge to the 616 Universe; Doctor Doom emerges"] }]},
-            { id: "m51", type: "sub", styleClass: "movie shows", title: "Ironheart", details: ["Riri Williams", "Magic vs Tech"], children: [
-                { id: "c51", type: "side", styleClass: "postcredit", title: "Lore", details: ["Rhodey contacts Riri regarding stolen Stark Tech (Armor Wars)"] }]},
-            { id: "m52", type: "sub", styleClass: "movie shows", title: "Wonder Man", details: ["Simon Williams", "Hollywood Superhero"], children: [
-                { id: "c52", type: "side", styleClass: "postcredit", title: "Lore", details: ["Simon fully embraces his public superhero persona on a movie set"] }]}
+        { id: "p5", type: "phase", styleClass: "p5", title: "Phase 5<br>Doomsday Build", children: [
+            { id: "m39", type: "sub", styleClass: "movie p5", title: "Ant-Man: Quantumania", details: ["Kang", "Microverse"], children: [
+                { id: "c39", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Council of Kangs gathers; Victor Timely intro"] }]},
+            { id: "m40", type: "sub", styleClass: "movie p5", title: "GotG Vol. 3", details: ["Rocket's Origin", "High Evo"], children: [
+                { id: "c40", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["New Guardians Team formed; Quill on Earth"] }]},
+            { id: "m41", type: "sub", styleClass: "movie shows", title: "Secret Invasion", details: ["Super Skrulls", "Harvest"], children: [
+                { id: "c41", type: "side", styleClass: "postcredit", title: "Lore", details: ["President declares war on aliens"] }]},
+            { id: "m42", type: "sub", styleClass: "movie shows", title: "Loki S2", details: ["Yggdrasil", "God Loki"], children: [
+                { id: "c42", type: "side", styleClass: "postcredit", title: "Lore", details: ["Loki holds the multiverse together"] }]},
+            { id: "m43", type: "sub", styleClass: "movie p5", title: "The Marvels", details: ["Quantum Bands", "Incursion"], children: [
+                { id: "c43", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Monica stranded in X-Men Universe (Beast/Binary)"] }]},
+            { id: "m46", type: "sub", styleClass: "movie p5", title: "Deadpool & Wolverine", details: ["Anchor Beings", "The Void"], children: [
+                { id: "c46", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["TVA monitoring Earth-10005 Anchor Being"] }]},
+            { id: "m47", type: "sub", styleClass: "movie shows", title: "Agatha All Along", details: ["Wiccan", "Death"], children: [
+                { id: "c47", type: "side", styleClass: "postcredit", title: "Lore", details: ["Agatha guides Billy to find Tommy"] }]},
+            { id: "m48", type: "sub", styleClass: "movie p5", title: "Cap: Brave New World", details: ["Red Hulk", "Adamantium"], children: [
+                { id: "c48", type: "side", styleClass: "postcredit", title: "Plot Setup", details: ["Tiamut (Celestial) is source of Adamantium; Leader schemes"] }]},
+            { id: "m49", type: "sub", styleClass: "movie shows", title: "Daredevil: Born Again", details: ["Mayor Fisk", "Street Level"], children: [
+                { id: "c49", type: "side", styleClass: "postcredit", title: "Plot Setup", details: ["Fisk outlaws vigilantes; Punisher returns"] }]},
+            { id: "m50", type: "sub", styleClass: "movie p5", title: "Thunderbolts*", details: ["Val's Team", "Sentry"], children: [
+                { id: "c50", type: "side", styleClass: "postcredit", title: "Plot Setup", details: ["Val buys Avengers Tower; Sentry (Bob) is the weapon"] }]},
+            { id: "m51", type: "sub", styleClass: "movie shows", title: "Ironheart", details: ["Magic vs Tech", "The Hood"], children: [
+                { id: "c51", type: "side", styleClass: "postcredit", title: "Plot Setup", details: ["Mephisto technology trade; Armor Wars setup"] }]},
+            { id: "m52", type: "sub", styleClass: "movie shows", title: "Wonder Man", details: ["Hollywood", "Grim Reaper"], children: [
+                { id: "c52", type: "side", styleClass: "postcredit", title: "Plot Setup", details: ["Simon Williams gains ionic powers"] }]}
+        ]},
+
+        // PHASE 6
+        { id: "p6", type: "phase", styleClass: "p6", title: "Phase 6<br>The Multiverse Finale", children: [
+            { id: "m53", type: "sub", styleClass: "movie p6", title: "Fantastic Four: First Steps", details: ["Galactus", "Future Foundation"], children: [
+                { id: "c53", type: "side", styleClass: "postcredit", title: "Plot Setup", details: ["Set in alternate 60s; Bridge to 616; Doom's rise"] }]},
+            { id: "m54", type: "sub", styleClass: "movie p6", title: "Avengers: Doomsday", details: ["Doctor Doom", "Incursions"], children: [
+                { id: "c54", type: "side", styleClass: "postcredit", title: "Lore", details: ["Collapse of the Multiverse begins"] }]},
+            { id: "m55", type: "sub", styleClass: "movie p6", title: "Spider-Man 4", details: ["Symbiote?", "Street Level"], children: [
+                { id: "c55", type: "side", styleClass: "postcredit", title: "Lore", details: ["Peter plays key role in Incursion defense"] }]},
+            { id: "m56", type: "sub", styleClass: "movie p6", title: "Avengers: Secret Wars", details: ["Battleworld", "Soft Reboot"], children: [
+                { id: "c56", type: "side", styleClass: "postcredit", title: "Lore", details: ["Creation of a new, single Sacred Timeline (Mutants included)"] }]}
         ]}
     ]
 };
 
-/* ---------------- TIGHTER LAYOUT CONSTANTS (Card Overlap Enabled) ---------------- */
-const CENTER_X = 2500;
-const CENTER_Y = 2500;
-const PHASE_RADIUS = 350;     // Pulled in much closer
-const SUB_RADIUS_MIN = 700;   // Inner ring for movies
-const SUB_RADIUS_MAX = 900;   // Outer ring for staggered movies
-const LEAF_RADIUS = 200;      // Distance for post-credits
+/* ---------------- LAYOUT CONSTANTS ---------------- */
+const CENTER_X = 3000;
+const CENTER_Y = 3000;
+const PHASE_RADIUS = 400;     
+const SUB_RADIUS_MIN = 800;   
+const SUB_RADIUS_MAX = 1000;  
+const LEAF_RADIUS = 220;      
 
 const world = document.getElementById('world');
 const svgContainer = document.getElementById('connections');
@@ -450,21 +447,20 @@ function renderTree(node, parentX, parentY, startAngle, endAngle, depth, childIn
     if (depth === 0) {
         x = CENTER_X; y = CENTER_Y;
     } else if (depth === 1) {
-        // 5 Phases
-        const phaseAngles = { 'p1': 270, 'p2': 342, 'p3': 54, 'p4': 126, 'p5': 198 };
+        // 6 Phases distributed
+        const phaseAngles = { 'p1': 270, 'p2': 330, 'p3': 30, 'p4': 90, 'p5': 150, 'p6': 210 };
         let angleDeg = phaseAngles[node.id];
         const rad = (angleDeg * Math.PI) / 180;
         x = CENTER_X + PHASE_RADIUS * Math.cos(rad);
         y = CENTER_Y + PHASE_RADIUS * Math.sin(rad);
         currentAngle = angleDeg;
     } else if (depth === 2) {
-        // Movies: tighter fan array
-        const span = 80; 
+        // Movies
+        const span = 60; 
         const step = span / node.siblingsCount;
         const phaseStart = startAngle - (span / 2);
         currentAngle = phaseStart + (step * childIndex) + (step / 2);
         
-        // Stagger distance
         const dist = (childIndex % 2 === 0) ? SUB_RADIUS_MIN : SUB_RADIUS_MAX;
         const rad = (currentAngle * Math.PI) / 180;
         x = parentX + dist * Math.cos(rad);
@@ -477,7 +473,6 @@ function renderTree(node, parentX, parentY, startAngle, endAngle, depth, childIn
         y = parentY + LEAF_RADIUS * Math.sin(rad);
     }
 
-    // Create Element
     const el = document.createElement('div');
     const isCore = node.type === 'core';
     el.className = `node ${node.styleClass || ''} ${isCore ? 'core-hub' : ''}`;
@@ -488,19 +483,13 @@ function renderTree(node, parentX, parentY, startAngle, endAngle, depth, childIn
     }
     el.innerHTML = html;
 
-    const w = isCore ? 300 : (depth === 3 ? 210 : 250);
-    const h = isCore ? 300 : (depth === 1 ? 130 : 110); 
-    
-    el.style.left = (x - w/2) + 'px';
-    el.style.top = (y - h/2) + 'px';
+    // Use specific left/top based on center point and let CSS transform handle centering
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
     el.dataset.id = node.id;
     el.dataset.expanded = "true";
-
-    // Dynamic Z-Index for Card Overlapping
-    // Base z-index gets higher the further out it goes so leaves are always on top
     el.style.zIndex = depth * 10;
 
-    // Interactions
     el.addEventListener('pointerdown', (e) => e.stopPropagation());
     el.onclick = (e) => {
         if(mapState.isDragging) return; 
@@ -559,25 +548,20 @@ function toggleNode(id) {
     drawConnections();
 }
 
-/* ---------------- INTERACTION ENGINE: DRAGGABLE LEGEND ---------------- */
+/* ---------------- INTERACTION ENGINE ---------------- */
 function setupLegendInteractions() {
     const legend = document.getElementById('legend');
     const header = document.getElementById('legend-header');
     const minBtn = document.getElementById('min-btn');
-    
-    let isDraggingLeg = false;
-    let startX, startY, initLeft, initTop;
+    let isDraggingLeg = false, startX, startY, initLeft, initTop;
 
     header.addEventListener('pointerdown', (e) => {
         if(e.target === minBtn) return;
         isDraggingLeg = true;
-        startX = e.clientX;
-        startY = e.clientY;
+        startX = e.clientX; startY = e.clientY;
         const rect = legend.getBoundingClientRect();
-        initLeft = rect.left;
-        initTop = rect.top;
-        legend.style.right = 'auto'; 
-        legend.style.bottom = 'auto';
+        initLeft = rect.left; initTop = rect.top;
+        legend.style.right = 'auto'; legend.style.bottom = 'auto';
         e.stopPropagation();
     });
 
@@ -585,60 +569,44 @@ function setupLegendInteractions() {
         if (!isDraggingLeg) return;
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
-        
-        let newX = initLeft + dx;
-        let newY = initTop + dy;
-        newX = Math.max(0, Math.min(newX, window.innerWidth - legend.offsetWidth));
-        newY = Math.max(0, Math.min(newY, window.innerHeight - legend.offsetHeight));
-
-        legend.style.left = `${newX}px`;
-        legend.style.top = `${newY}px`;
+        let newX = Math.max(0, Math.min(initLeft + dx, window.innerWidth - legend.offsetWidth));
+        let newY = Math.max(0, Math.min(initTop + dy, window.innerHeight - legend.offsetHeight));
+        legend.style.left = `${newX}px`; legend.style.top = `${newY}px`;
         e.stopPropagation();
     });
 
     window.addEventListener('pointerup', () => isDraggingLeg = false);
-
     minBtn.addEventListener('click', (e) => {
         legend.classList.toggle('minimized');
         minBtn.textContent = legend.classList.contains('minimized') ? '+' : '−';
         e.stopPropagation();
     });
-    
     legend.addEventListener('pointerdown', e => e.stopPropagation());
     legend.addEventListener('wheel', e => e.stopPropagation());
 }
 
-/* ---------------- INTERACTION ENGINE: MAP PAN & ZOOM ---------------- */
 let mapState = { x: 0, y: 0, scale: 1, isDragging: false };
-const MIN_SCALE = 0.1, MAX_SCALE = 2.5;
+const MIN_SCALE = 0.08, MAX_SCALE = 2.5;
 const viewport = document.getElementById('viewport');
 let evCache = [];
 let prevDiff = -1;
 
 function setupMapInteractions() {
-    viewport.addEventListener('pointerdown', e => {
-        evCache.push(e);
-        mapState.isDragging = true;
-    });
-    
+    viewport.addEventListener('pointerdown', e => { evCache.push(e); mapState.isDragging = true; });
     viewport.addEventListener('pointermove', e => {
         const index = evCache.findIndex(ev => ev.pointerId === e.pointerId);
         if(index > -1) evCache[index] = e;
-
         if (!mapState.isDragging) return;
-
         if (evCache.length === 2) {
             const curDiff = Math.hypot(evCache[0].clientX - evCache[1].clientX, evCache[0].clientY - evCache[1].clientY);
             if (prevDiff > 0) {
                 const centerX = (evCache[0].clientX + evCache[1].clientX) / 2;
                 const centerY = (evCache[0].clientY + evCache[1].clientY) / 2;
-                zoomToPoint(centerX, centerY, (curDiff - prevDiff) * 0.005);
+                zoomToPoint(centerX, centerY, (curDiff - prevDiff) * 0.004);
             }
             prevDiff = curDiff;
         } else if (evCache.length === 1) {
-            mapState.x += e.movementX;
-            mapState.y += e.movementY;
-            updateTransform();
+            mapState.x += e.movementX; mapState.y += e.movementY; updateTransform();
         }
     });
 
@@ -648,15 +616,10 @@ function setupMapInteractions() {
         if (evCache.length < 2) prevDiff = -1;
         if (evCache.length === 0) setTimeout(() => mapState.isDragging = false, 50);
     };
-    
     viewport.addEventListener('pointerup', pointerUpHandler);
     viewport.addEventListener('pointercancel', pointerUpHandler);
     viewport.addEventListener('pointerout', pointerUpHandler);
-    
-    viewport.addEventListener('wheel', e => {
-        e.preventDefault();
-        zoomToPoint(e.clientX, e.clientY, -e.deltaY * 0.001);
-    }, { passive: false });
+    viewport.addEventListener('wheel', e => { e.preventDefault(); zoomToPoint(e.clientX, e.clientY, -e.deltaY * 0.001); }, { passive: false });
 }
 
 function zoomToPoint(cx, cy, factor) {
@@ -669,20 +632,12 @@ function zoomToPoint(cx, cy, factor) {
 }
 
 function adjustZoom(amount) { zoomToPoint(window.innerWidth / 2, window.innerHeight / 2, amount); }
-
-function updateTransform() {
-    world.style.transform = `translate(${mapState.x}px, ${mapState.y}px) scale(${mapState.scale})`;
-}
-
+function updateTransform() { world.style.transform = `translate(${mapState.x}px, ${mapState.y}px) scale(${mapState.scale})`; }
 function resetView() {
     const winW = window.innerWidth;
-    const winH = window.innerHeight;
-    
-    // Better starting zoom since the map is now denser
     let initialScale = winW < 768 ? 0.35 : 0.6; 
-    
     mapState.x = (winW / 2) - (CENTER_X * initialScale);
-    mapState.y = (winH / 2) - (CENTER_Y * initialScale);
+    mapState.y = (window.innerHeight / 2) - (CENTER_Y * initialScale);
     mapState.scale = initialScale;
     updateTransform();
 }
