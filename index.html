@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MCU S.H.I.E.L.D. Complete Database</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --font-family: 'Courier New', monospace;
+            
+            /* Infinity Stone Phase Colors */
+            --p1-bg: #001233; --p1-border: #007BFF; /* Space */
+            --p2-bg: #330000; --p2-border: #DC3545; /* Reality */
+            --p3-bg: #002200; --p3-border: #28A745; /* Time */
+            --p4-bg: #220033; --p4-border: #9370DB; /* Power/Multiverse */
+            --p5-bg: #331A00; --p5-border: #FF8C00; /* Soul/Kang (Orange) */
+            
+            /* Specific Types */
+            --shows-bg: #332200; --shows-border: #FFC107; /* Mind Stone / Series */
+            --movie-bg: rgba(15, 15, 15, 0.85); --movie-border: #555555; 
+            --postcredit-bg: rgba(0, 43, 54, 0.85); --postcredit-border: #17A2B8;
+            
+            /* Core */
+            --core-red: #E23636;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at center, #111 0%, #000 100%);
+            overflow: hidden;
+            font-family: var(--font-family);
+            color: white;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* The Infinite Canvas */
+        #viewport {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; cursor: grab; z-index: 1;
+        }
+        #viewport:active { cursor: grabbing; }
+
+        #world { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+        /* Cosmic Stars Background Effect */
+        #stars {
+            position: absolute; top: -2500px; left: -2500px;
+            width: 10000px; height: 10000px;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat; background-size: 250px 250px;
+            z-index: 0; opacity: 0.3; pointer-events: none;
+        }
+
+        svg#connections {
+            position: absolute; top: 0; left: 0;
+            width: 5000px; height: 5000px;
+            pointer-events: none; z-index: 1;
+        }
+
+        /* Node Styling - Glassmorphism for intentional overlap */
+        .node {
+            position: absolute;
+            width: 250px;
+            padding: 15px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            background: var(--movie-bg);
+            border: 2px solid var(--movie-border);
+            transition: box-shadow 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+            cursor: pointer; box-sizing: border-box;
+            z-index: 10; border-radius: 8px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        }
+
+        /* Bring hovered card to the absolute front */
+        .node:hover, .node:active { 
+            z-index: 9999 !important; 
+            filter: brightness(1.3);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+        }
+
+        .node h3 {
+            margin: 0 0 8px 0; font-size: 15px;
+            pointer-events: none; text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        .node ul {
+            text-align: left; padding-left: 18px; margin: 0;
+            font-size: 13px; line-height: 1.4;
+            display: none; pointer-events: none; color: #ddd;
+        }
+        
+        .node.expanded ul { display: block; }
+
+        /* Perfect Circle Core Hub */
+        .core-hub {
+            width: 300px; height: 300px; 
+            min-width: 300px; min-height: 300px; 
+            border-radius: 50% !important;
+            aspect-ratio: 1 / 1; 
+            flex-shrink: 0;
+            background: #000; border: 5px solid var(--core-red);
+            box-shadow: 0 0 50px var(--core-red), inset 0 0 30px var(--core-red);
+            z-index: 50; display: flex; justify-content: center; align-items: center;
+        }
+        .core-hub h1 {
+            color: #FFF; text-shadow: 0 0 10px #FFF, 0 0 20px var(--core-red);
+            font-size: 24px; text-transform: uppercase; letter-spacing: 2px; margin: 0;
+        }
+
+        /* Node Colors */
+        .p1 { background: rgba(0,18,51,0.85); border-color: var(--p1-border); box-shadow: 0 0 15px var(--p1-border); }
+        .p2 { background: rgba(51,0,0,0.85); border-color: var(--p2-border); box-shadow: 0 0 15px var(--p2-border); }
+        .p3 { background: rgba(0,34,0,0.85); border-color: var(--p3-border); box-shadow: 0 0 15px var(--p3-border); }
+        .p4 { background: rgba(34,0,51,0.85); border-color: var(--p4-border); box-shadow: 0 0 15px var(--p4-border); }
+        .p5 { background: rgba(51,26,0,0.85); border-color: var(--p5-border); box-shadow: 0 0 15px var(--p5-border); }
+        
+        .shows { background: rgba(51,34,0,0.85); border-color: var(--shows-border); box-shadow: 0 0 15px var(--shows-border); }
+        .movie { background: var(--movie-bg); border-color: var(--movie-border); box-shadow: 0 0 8px var(--movie-border); }
+        
+        .postcredit { 
+            width: 210px;
+            background: var(--postcredit-bg); 
+            border: 2px dashed var(--postcredit-border); 
+            box-shadow: 0 0 8px var(--postcredit-border); 
+        }
+
+        /* SVG Paths */
+        path { fill: none; stroke-width: 2px; opacity: 0.7; }
+        .connection-line { stroke-dasharray: 10; stroke-dashoffset: 1000; animation: dash 60s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+
+        /* --- UI Controls Layer --- */
+        .ui-layer {
+            position: fixed; z-index: 1000;
+            width: 100%; height: 100%;
+            top: 0; left: 0; pointer-events: none;
+        }
+
+        /* --- Draggable Legend --- */
+        .legend-widget {
+            position: absolute;
+            top: 20px; left: 20px;
+            width: 310px;
+            max-width: 90vw;
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid #444;
+            border-radius: 8px;
+            pointer-events: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(226, 54, 54, 0.2);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            transition: height 0.3s ease;
+        }
+
+        .legend-header {
+            background: #1a0505;
+            border-bottom: 1px solid var(--core-red);
+            padding: 12px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: move; 
+            color: var(--core-red);
+            font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .legend-header span.title { pointer-events: none; }
+
+        .minimize-btn {
+            background: transparent; color: white; border: 1px solid #666;
+            width: 26px; height: 26px; border-radius: 4px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-family: monospace; font-weight: bold; font-size: 16px;
+        }
+        .minimize-btn:hover { background: #333; }
+
+        .legend-body {
+            padding: 15px;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .legend-widget.minimized .legend-body { display: none; }
+
+        .legend-item { display: flex; align-items: center; font-size: 14px; color: #ddd; white-space: nowrap; }
+        .dot { width: 16px; height: 16px; margin-right: 12px; border: 1px solid #fff; border-radius: 3px; flex-shrink:0; }
+
+        .instructions {
+            margin-top: 10px; padding-top: 10px;
+            border-top: 1px solid #333;
+            font-size: 13px; color: #aaa; line-height: 1.5;
+            display: block; 
+        }
+        .instructions ul { 
+            padding-left: 20px; 
+            margin: 8px 0 0 0; 
+            display: block;
+            list-style-type: disc;
+        }
+        .instructions li {
+            display: list-item;
+            text-align: left;
+            margin-bottom: 5px;
+            white-space: normal; 
+        }
+
+        /* Zoom/Center Controls */
+        .controls {
+            position: absolute; bottom: 25px; right: 25px;
+            display: flex; flex-direction: column; gap: 12px;
+            pointer-events: auto;
+        }
+
+        .btn {
+            background: rgba(15, 15, 15, 0.9); color: white;
+            border: 1px solid var(--core-red); padding: 14px 18px;
+            font-size: 18px; cursor: pointer; border-radius: 8px;
+            font-family: var(--font-family); font-weight: bold;
+            box-shadow: 0 0 10px rgba(226, 54, 54, 0.4);
+            backdrop-filter: blur(5px);
+        }
+        .btn:active { transform: scale(0.95); background: var(--core-red); }
+
+        @media (max-width: 768px) {
+            .controls { flex-direction: row; right: 15px; bottom: 15px; }
+            .legend-widget { width: 280px; left: 15px; top: 15px;}
+            .node { width: 220px; }
+            .core-hub { width: 250px; height: 250px; min-width: 250px; min-height: 250px; }
+            .core-hub h1 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-layer">
+        <!-- Draggable & Minimizable Legend -->
+        <div class="legend-widget" id="legend">
+            <div class="legend-header" id="legend-header">
+                <span class="title">S.H.I.E.L.D. Legend</span>
+                <button class="minimize-btn" id="min-btn">−</button>
+            </div>
+            <div class="legend-body">
+                <div class="legend-item"><div class="dot" style="background:var(--p1-bg); border-color:var(--p1-border);"></div>Phase 1 (Space)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p2-bg); border-color:var(--p2-border);"></div>Phase 2 (Reality)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p3-bg); border-color:var(--p3-border);"></div>Phase 3 (Time)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p4-bg); border-color:var(--p4-border);"></div>Phase 4 (Multiverse)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p5-bg); border-color:var(--p5-border);"></div>Phase 5 (Kang/Soul)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--shows-bg); border-color:var(--shows-border);"></div>Disney+ Series</div>
+                <div class="legend-item"><div class="dot" style="background:var(--postcredit-bg); border-color:var(--postcredit-border); border-style:dashed;"></div>Post-Credit / Lore</div>
+                
+                <div class="instructions">
+                    <strong>Navigation Commands:</strong>
+                    <ul>
+                        <li><strong>Swipe/Drag</strong> the background to pan around.</li>
+                        <li><strong>Pinch/Scroll</strong> to zoom in and out.</li>
+                        <li><strong>Tap/Click</strong> on any node to expand it.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="adjustZoom(0.2)">+</button>
+            <button class="btn" onclick="adjustZoom(-0.2)">−</button>
+            <button class="btn" onclick="resetView()">⟲ Center</button>
+        </div>
+    </div>
+
+    <!-- Interactive Canvas -->
+    <div id="viewport">
+        <div id="world">
+            <div id="stars"></div>
+            <svg id="connections"></svg>
+            <div id="nodes-container"></div>
+        </div>
+    </div>
+
+<script>
+/* ---------------- COMPREHENSIVE MCU DATA (FIXED POST CREDITS) ---------------- */
+const mcuData = {
+    id: "core", type: "core", title: "Marvel Cinematic<br>Universe",
+    children: [
+        // PHASE 1
+        { id: "p1", type: "phase", styleClass: "p1", title: "Phase 1<br>Avengers Assembled", children: [
+            { id: "m1", type: "sub", styleClass: "movie p1", title: "Iron Man", details: ["Tony Stark escapes", "Mark III Armor"], children: [
+                { id: "c1", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Nick Fury: Avenger Initiative"] }]},
+            { id: "m2", type: "sub", styleClass: "movie p1", title: "The Incredible Hulk", details: ["Bruce Banner on run", "Abomination"], children: [
+                { id: "c2", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tony Stark meets Ross"] }]},
+            { id: "m3", type: "sub", styleClass: "movie p1", title: "Iron Man 2", details: ["Palladium poisoning", "Whiplash, Black Widow"], children: [
+                { id: "c3", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Coulson finds Mjolnir in NM"] }]},
+            { id: "m4", type: "sub", styleClass: "movie p1", title: "Thor", details: ["Banished to Earth", "Loki's deception"], children: [
+                { id: "c4", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Selvig & Tesseract, controlled by Loki"] }]},
+            { id: "m5", type: "sub", styleClass: "movie p1", title: "Captain America: TFA", details: ["Steve Rogers", "Red Skull & Tesseract"], children: [
+                { id: "c5", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Steve wakes in modern day NY"] }]},
+            { id: "m6", type: "sub", styleClass: "movie p1", title: "The Avengers", details: ["Battle of New York", "Loki's Scepter"], children: [
+                { id: "c6", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos Revealed", "Eating Shawarma"] }]}
+        ]},
+        
+        // PHASE 2
+        { id: "p2", type: "phase", styleClass: "p2", title: "Phase 2<br>Age of Miracles", children: [
+            { id: "m7", type: "sub", styleClass: "movie p2", title: "Iron Man 3", details: ["PTSD", "The Mandarin/Extremis"], children: [
+                { id: "c7", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tony venting to Bruce Banner"] }]},
+            { id: "m8", type: "sub", styleClass: "movie p2", title: "Thor: The Dark World", details: ["Malekith", "The Aether"], children: [
+                { id: "c8", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Aether given to The Collector", "Thor returns to Jane"] }]},
+            { id: "m9", type: "sub", styleClass: "movie p2", title: "Captain America: TWS", details: ["Fall of SHIELD", "Hydra revealed"], children: [
+                { id: "c9", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Baron Strucker reveals Twins", "Bucky at Smithsonian"] }]},
+            { id: "m10", type: "sub", styleClass: "movie p2", title: "Guardians of the Galaxy", details: ["Star-Lord, Groot", "The Orb (Power Stone)"], children: [
+                { id: "c10", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Howard the Duck intro", "Dancing Baby Groot"] }]},
+            { id: "m11", type: "sub", styleClass: "movie p2", title: "Avengers: Age of Ultron", details: ["Ultron created", "Vision born"], children: [
+                { id: "c11", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos dons Infinity Gauntlet: 'I'll do it myself'"] }]},
+            { id: "m12", type: "sub", styleClass: "movie p2", title: "Ant-Man", details: ["Scott Lang heist", "Yellowjacket"], children: [
+                { id: "c12", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Hope gets Wasp suit", "Cap & Falcon find Bucky trapped"] }]}
+        ]},
+
+        // PHASE 3
+        { id: "p3", type: "phase", styleClass: "p3", title: "Phase 3<br>The Infinity Saga", children: [
+            { id: "m13", type: "sub", styleClass: "movie p3", title: "Captain America: Civil War", details: ["Sokovia Accords", "Zemo fractures Avengers"], children: [
+                { id: "c13", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Bucky in Wakanda freeze", "Spidey Signal"] }]},
+            { id: "m14", type: "sub", styleClass: "movie p3", title: "Doctor Strange", details: ["Kamar-Taj", "Time Stone"], children: [
+                { id: "c14", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thor needs help finding Odin", "Mordo goes rogue"] }]},
+            { id: "m15", type: "sub", styleClass: "movie p3", title: "GotG Vol. 2", details: ["Ego the Planet", "Mantis"], children: [
+                { id: "c15", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Kraglin arrow", "Adam Warlock cocoon", "Teen Groot", "Stan Lee Watchers"] }]},
+            { id: "m16", type: "sub", styleClass: "movie p3", title: "Spider-Man: Homecoming", details: ["Vulture", "Iron Man mentors"], children: [
+                { id: "c16", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Vulture protects Peter's ID", "Cap PSA on Patience"] }]},
+            { id: "m17", type: "sub", styleClass: "movie p3", title: "Thor: Ragnarok", details: ["Hela, Destruction of Asgard", "Planet Sakaar"], children: [
+                { id: "c17", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Thanos' massive ship approaches", "Grandmaster survives"] }]},
+            { id: "m18", type: "sub", styleClass: "movie p3", title: "Black Panther", details: ["Wakanda revealed", "Killmonger"], children: [
+                { id: "c18", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Wakanda addresses UN", "Bucky is the White Wolf"] }]},
+            { id: "m19", type: "sub", styleClass: "movie p3", title: "Avengers: Infinity War", details: ["Thanos collects stones", "The Snap"], children: [
+                { id: "c19", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Fury pages Captain Marvel before dusting"] }]},
+            { id: "m20", type: "sub", styleClass: "movie p3", title: "Ant-Man and the Wasp", details: ["Quantum Realm rescue", "Ghost"], children: [
+                { id: "c20", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Hank, Janet, Hope dust while Scott is in Quantum Realm"] }]},
+            { id: "m21", type: "sub", styleClass: "movie p3", title: "Captain Marvel", details: ["Kree vs Skrull", "Carol Danvers origins"], children: [
+                { id: "c21", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Carol meets Avengers in 2018", "Goose coughs up Tesseract"] }]},
+            { id: "m22", type: "sub", styleClass: "movie p3", title: "Avengers: Endgame", details: ["Time Heist", "Tony's Sacrifice"], children: [
+                { id: "c22", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["(Audio Only) Clanging of Iron Man Mark 1 armor being built"] }]},
+            { id: "m23", type: "sub", styleClass: "movie p3", title: "Spider-Man: Far From Home", details: ["Mysterio, EDITH", "Post-Blip trauma"], children: [
+                { id: "c23", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["J. Jonah Jameson reveals Peter's ID", "Nick Fury was Talos"] }]}
+        ]},
+
+        // PHASE 4
+        { id: "p4", type: "phase", styleClass: "p4", title: "Phase 4<br>The Multiverse Begins", children: [
+            { id: "m24", type: "sub", styleClass: "movie shows", title: "WandaVision", details: ["Westview Hex", "Scarlet Witch born"], children: [
+                { id: "c24", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Monica meets Skrull", "Wanda studies Darkhold in isolation"] }]},
+            { id: "m25", type: "sub", styleClass: "movie shows", title: "Falcon & Winter Soldier", details: ["Sam becomes Cap", "Flag Smashers"], children: [
+                { id: "c25", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Sharon Carter pardoned, revealed as Power Broker"] }]},
+            { id: "m26", type: "sub", styleClass: "movie shows", title: "Loki S1", details: ["TVA, Sylvie", "He Who Remains"], children: [
+                { id: "c26", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Loki arrives in altered TVA with Kang statue"] }]},
+            { id: "m27", type: "sub", styleClass: "movie p4", title: "Black Widow", details: ["Red Room destroyed", "Yelena Belova"], children: [
+                { id: "c27", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Val tells Yelena that Hawkeye killed Natasha"] }]},
+            { id: "m28", type: "sub", styleClass: "movie shows", title: "What If...? S1", details: ["The Watcher", "Multiverse Variants"], children: [
+                { id: "c28", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Captain Carter finds Hydra Stomper"] }]},
+            { id: "m29", type: "sub", styleClass: "movie p4", title: "Shang-Chi", details: ["Ten Rings", "Ta Lo"], children: [
+                { id: "c29", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Bruce & Carol analyze Rings beacon", "Xialing takes over Ten Rings"] }]},
+            { id: "m30", type: "sub", styleClass: "movie p4", title: "Eternals", details: ["Celestials stopped", "Deviants"], children: [
+                { id: "c30", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Eros (Starfox) appears", "Blade speaks to Dane Whitman"] }]},
+            { id: "m31", type: "sub", styleClass: "movie shows", title: "Hawkeye", details: ["Kate Bishop", "Kingpin returns"], children: [
+                { id: "c31", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Rogers: The Musical full performance"] }]},
+            { id: "m32", type: "sub", styleClass: "movie p4", title: "Spider-Man: No Way Home", details: ["Multiverse Villains", "3 Spideys unite"], children: [
+                { id: "c32", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Tom Hardy's Venom leaves symbiote piece behind"] }]},
+            { id: "m33", type: "sub", styleClass: "movie shows", title: "Moon Knight", details: ["Marc Spector", "Egyptian Gods"], children: [
+                { id: "c33", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Arthur Harrow assassinated by Jake Lockley"] }]},
+            { id: "m34", type: "sub", styleClass: "movie p4", title: "Doctor Strange in the Multiverse of Madness", details: ["America Chavez", "Scarlet Witch attacks"], children: [
+                { id: "c34", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Clea arrives to fix incursion", "Pizza Poppa stops punching himself"] }]},
+            { id: "m35", type: "sub", styleClass: "movie shows", title: "Ms. Marvel", details: ["Kamala Khan", "Bangle powers"], children: [
+                { id: "c35", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Kamala swaps places with Captain Marvel"] }]},
+            { id: "m36", type: "sub", styleClass: "movie p4", title: "Thor: Love and Thunder", details: ["Gorr the God Butcher", "Mighty Thor (Jane)"], children: [
+                { id: "c36", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Zeus unleashes Hercules", "Jane arrives in Valhalla"] }]},
+            { id: "m37", type: "sub", styleClass: "movie shows", title: "She-Hulk", details: ["Jennifer Walters", "Hulk King", "Daredevil"], children: [
+                { id: "c37", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Wong breaks Emil Blonsky out of prison"] }]},
+            { id: "m38", type: "sub", styleClass: "movie p4", title: "Black Panther: Wakanda Forever", details: ["Shuri becomes BP", "Namor & Talokan"], children: [
+                { id: "c38", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Shuri meets T'Challa's son, Toussaint"] }]}
+        ]},
+
+        // PHASE 5
+        { id: "p5", type: "phase", styleClass: "p5", title: "Phase 5<br>The Kang Dynasty Builds", children: [
+            { id: "m39", type: "sub", styleClass: "movie p5", title: "Ant-Man: Quantumania", details: ["Kang the Conqueror", "MODOK"], children: [
+                { id: "c39", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Council of Kangs assembles", "Loki & Mobius find Victor Timely"] }]},
+            { id: "m40", type: "sub", styleClass: "movie p5", title: "Guardians of the Galaxy Vol. 3", details: ["High Evolutionary", "Rocket's past"], children: [
+                { id: "c40", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["New GotG team with Rocket leading", "The Legendary Star-Lord Will Return"] }]},
+            { id: "m41", type: "sub", styleClass: "movie shows", title: "Secret Invasion", details: ["Gravik", "G'iah becomes Super Skrull"], children: [
+                { id: "c41", type: "side", styleClass: "postcredit", title: "Lore", details: ["President Ritson declares war on off-worlders"] }]},
+            { id: "m42", type: "sub", styleClass: "movie shows", title: "Loki S2", details: ["Temporal Loom fails", "God Loki"], children: [
+                { id: "c42", type: "side", styleClass: "postcredit", title: "Lore", details: ["Loki becomes the anchor of the Multiverse Tree"] }]},
+            { id: "m43", type: "sub", styleClass: "movie p5", title: "The Marvels", details: ["Carol, Kamala, Monica unite", "Dar-Benn"], children: [
+                { id: "c43", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Monica wakes up in X-Men universe with Beast & Binary", "Kamala recruits Kate Bishop"] }]},
+            { id: "m44", type: "sub", styleClass: "movie shows", title: "What If...? S2", details: ["Kahhori", "Strange Supreme"], children: [
+                { id: "c44", type: "side", styleClass: "postcredit", title: "Lore", details: ["Watcher shows Yggdrasil (Loki)"] }]},
+            { id: "m45", type: "sub", styleClass: "movie shows", title: "Echo", details: ["Maya Lopez", "Kingpin survives"], children: [
+                { id: "c45", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Fisk watches NY Mayoral race news, planning his campaign"] }]},
+            { id: "m46", type: "sub", styleClass: "movie p5", title: "Deadpool & Wolverine", details: ["TVA recruits Wade", "Logan returns", "Cassandra Nova"], children: [
+                { id: "c46", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Deadpool proves Johnny Storm actually said those horrible things"] }]},
+            { id: "m47", type: "sub", styleClass: "movie shows", title: "Agatha All Along", details: ["Witches' Road", "Teen is Wiccan"], children: [
+                { id: "c47", type: "side", styleClass: "postcredit", title: "Lore", details: ["Agatha becomes a ghost guide for Billy"] }]},
+            { id: "m48", type: "sub", styleClass: "movie p5", title: "Captain America: Brave New World", details: ["Sam Wilson Cap", "Red Hulk", "Adamantium"], children: [
+                { id: "c48", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["President Ross is locked in the Raft; Val pays him a visit"] }]},
+            { id: "m49", type: "sub", styleClass: "movie shows", title: "Daredevil: Born Again", details: ["Matt Murdock vs Mayor Fisk"], children: [
+                { id: "c49", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Fisk consolidates power; Punisher continues his crusade"] }]},
+            { id: "m50", type: "sub", styleClass: "movie p5", title: "Thunderbolts*", details: ["Yelena, Bucky, US Agent", "Sentry"], children: [
+                { id: "c50", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["The team goes rogue, severing ties with Valentina"] }]},
+            { id: "m51", type: "sub", styleClass: "movie shows", title: "Ironheart", details: ["Riri Williams", "Magic vs Tech"], children: [
+                { id: "c51", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Rhodey contacts Riri regarding stolen Stark Tech (Armor Wars)"] }]},
+            { id: "m52", type: "sub", styleClass: "movie shows", title: "Wonder Man", details: ["Simon Williams", "Hollywood Superhero"], children: [
+                { id: "c52", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Simon fully embraces his public superhero persona on a movie set"] }]}
+        ]}
+    ]
+};
+
+/* ---------------- TIGHTER LAYOUT CONSTANTS (Card Overlap Enabled) ---------------- */
+const CENTER_X = 2500;
+const CENTER_Y = 2500;
+const PHASE_RADIUS = 350;     // Pulled in much closer
+const SUB_RADIUS_MIN = 700;   // Inner ring for movies
+const SUB_RADIUS_MAX = 900;   // Outer ring for staggered movies
+const LEAF_RADIUS = 200;      // Distance for post-credits
+
+const world = document.getElementById('world');
+const svgContainer = document.getElementById('connections');
+const container = document.getElementById('nodes-container');
+let renderedNodes = {};
+
+/* ---------------- RENDERING ENGINE ---------------- */
+function init() {
+    renderTree(mcuData, CENTER_X, CENTER_Y, 0, 360, 0);
+    drawConnections();
+    resetView();
+    setupMapInteractions();
+    setupLegendInteractions();
+}
+
+function renderTree(node, parentX, parentY, startAngle, endAngle, depth, childIndex = 0) {
+    let x, y, currentAngle;
+
+    if (depth === 0) {
+        x = CENTER_X; y = CENTER_Y;
+    } else if (depth === 1) {
+        // 5 Phases
+        const phaseAngles = { 'p1': 270, 'p2': 342, 'p3': 54, 'p4': 126, 'p5': 198 };
+        let angleDeg = phaseAngles[node.id];
+        const rad = (angleDeg * Math.PI) / 180;
+        x = CENTER_X + PHASE_RADIUS * Math.cos(rad);
+        y = CENTER_Y + PHASE_RADIUS * Math.sin(rad);
+        currentAngle = angleDeg;
+    } else if (depth === 2) {
+        // Movies: tighter fan array
+        const span = 80; 
+        const step = span / node.siblingsCount;
+        const phaseStart = startAngle - (span / 2);
+        currentAngle = phaseStart + (step * childIndex) + (step / 2);
+        
+        // Stagger distance
+        const dist = (childIndex % 2 === 0) ? SUB_RADIUS_MIN : SUB_RADIUS_MAX;
+        const rad = (currentAngle * Math.PI) / 180;
+        x = parentX + dist * Math.cos(rad);
+        y = parentY + dist * Math.sin(rad);
+    } else {
+        // Post-credits
+        currentAngle = startAngle + (childIndex * 15) - 7.5; 
+        const rad = (currentAngle * Math.PI) / 180;
+        x = parentX + LEAF_RADIUS * Math.cos(rad);
+        y = parentY + LEAF_RADIUS * Math.sin(rad);
+    }
+
+    // Create Element
+    const el = document.createElement('div');
+    const isCore = node.type === 'core';
+    el.className = `node ${node.styleClass || ''} ${isCore ? 'core-hub' : ''}`;
+    
+    let html = `<h3>${node.title}</h3>`;
+    if (node.details && node.details.length > 0) {
+        html += `<ul>${node.details.map(d => `<li>${d}</li>`).join('')}</ul>`;
+    }
+    el.innerHTML = html;
+
+    const w = isCore ? 300 : (depth === 3 ? 210 : 250);
+    const h = isCore ? 300 : (depth === 1 ? 130 : 110); 
+    
+    el.style.left = (x - w/2) + 'px';
+    el.style.top = (y - h/2) + 'px';
+    el.dataset.id = node.id;
+    el.dataset.expanded = "true";
+
+    // Dynamic Z-Index for Card Overlapping
+    // Base z-index gets higher the further out it goes so leaves are always on top
+    el.style.zIndex = depth * 10;
+
+    // Interactions
+    el.addEventListener('pointerdown', (e) => e.stopPropagation());
+    el.onclick = (e) => {
+        if(mapState.isDragging) return; 
+        toggleNode(node.id);
+    };
+
+    container.appendChild(el);
+    renderedNodes[node.id] = { x, y, el, children: [], color: getComputedStyle(el).borderColor };
+
+    if (node.children) {
+        node.children.forEach((child, idx) => {
+            child.siblingsCount = node.children.length;
+            renderedNodes[node.id].children.push(child.id);
+            renderTree(child, x, y, currentAngle, 0, depth + 1, idx);
+        });
+    }
+}
+
+function drawConnections() {
+    svgContainer.innerHTML = "";
+    Object.keys(renderedNodes).forEach(id => {
+        const node = renderedNodes[id];
+        node.children.forEach(childId => {
+            const child = renderedNodes[childId];
+            if (child.el.style.display !== 'none') {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                const midX = (node.x + child.x) / 2;
+                const midY = (node.y + child.y) / 2;
+                const d = `M ${node.x} ${node.y} Q ${midX} ${midY} ${child.x} ${child.y}`;
+                
+                path.setAttribute("d", d);
+                path.setAttribute("stroke", child.color);
+                path.setAttribute("class", "connection-line");
+                if(child.el.classList.contains('postcredit')) path.setAttribute("stroke-dasharray", "6,6");
+                svgContainer.appendChild(path);
+            }
+        });
+    });
+}
+
+function toggleNode(id) {
+    const node = renderedNodes[id];
+    const isExpanded = node.el.dataset.expanded === "true";
+    node.el.dataset.expanded = isExpanded ? "false" : "true";
+    node.el.classList.toggle('expanded');
+    
+    function setVis(pid, visible) {
+        renderedNodes[pid].children.forEach(cid => {
+            const child = renderedNodes[cid];
+            child.el.style.display = visible ? 'flex' : 'none';
+            if(visible && child.el.dataset.expanded === "true") setVis(cid, true);
+            else if(!visible) setVis(cid, false);
+        });
+    }
+    setVis(id, !isExpanded);
+    drawConnections();
+}
+
+/* ---------------- INTERACTION ENGINE: DRAGGABLE LEGEND ---------------- */
+function setupLegendInteractions() {
+    const legend = document.getElementById('legend');
+    const header = document.getElementById('legend-header');
+    const minBtn = document.getElementById('min-btn');
+    
+    let isDraggingLeg = false;
+    let startX, startY, initLeft, initTop;
+
+    header.addEventListener('pointerdown', (e) => {
+        if(e.target === minBtn) return;
+        isDraggingLeg = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = legend.getBoundingClientRect();
+        initLeft = rect.left;
+        initTop = rect.top;
+        legend.style.right = 'auto'; 
+        legend.style.bottom = 'auto';
+        e.stopPropagation();
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!isDraggingLeg) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        
+        let newX = initLeft + dx;
+        let newY = initTop + dy;
+        newX = Math.max(0, Math.min(newX, window.innerWidth - legend.offsetWidth));
+        newY = Math.max(0, Math.min(newY, window.innerHeight - legend.offsetHeight));
+
+        legend.style.left = `${newX}px`;
+        legend.style.top = `${newY}px`;
+        e.stopPropagation();
+    });
+
+    window.addEventListener('pointerup', () => isDraggingLeg = false);
+
+    minBtn.addEventListener('click', (e) => {
+        legend.classList.toggle('minimized');
+        minBtn.textContent = legend.classList.contains('minimized') ? '+' : '−';
+        e.stopPropagation();
+    });
+    
+    legend.addEventListener('pointerdown', e => e.stopPropagation());
+    legend.addEventListener('wheel', e => e.stopPropagation());
+}
+
+/* ---------------- INTERACTION ENGINE: MAP PAN & ZOOM ---------------- */
+let mapState = { x: 0, y: 0, scale: 1, isDragging: false };
+const MIN_SCALE = 0.1, MAX_SCALE = 2.5;
+const viewport = document.getElementById('viewport');
+let evCache = [];
+let prevDiff = -1;
+
+function setupMapInteractions() {
+    viewport.addEventListener('pointerdown', e => {
+        evCache.push(e);
+        mapState.isDragging = true;
+    });
+    
+    viewport.addEventListener('pointermove', e => {
+        const index = evCache.findIndex(ev => ev.pointerId === e.pointerId);
+        if(index > -1) evCache[index] = e;
+
+        if (!mapState.isDragging) return;
+
+        if (evCache.length === 2) {
+            const curDiff = Math.hypot(evCache[0].clientX - evCache[1].clientX, evCache[0].clientY - evCache[1].clientY);
+            if (prevDiff > 0) {
+                const centerX = (evCache[0].clientX + evCache[1].clientX) / 2;
+                const centerY = (evCache[0].clientY + evCache[1].clientY) / 2;
+                zoomToPoint(centerX, centerY, (curDiff - prevDiff) * 0.005);
+            }
+            prevDiff = curDiff;
+        } else if (evCache.length === 1) {
+            mapState.x += e.movementX;
+            mapState.y += e.movementY;
+            updateTransform();
+        }
+    });
+
+    const pointerUpHandler = e => {
+        const index = evCache.findIndex(ev => ev.pointerId === e.pointerId);
+        if(index > -1) evCache.splice(index, 1);
+        if (evCache.length < 2) prevDiff = -1;
+        if (evCache.length === 0) setTimeout(() => mapState.isDragging = false, 50);
+    };
+    
+    viewport.addEventListener('pointerup', pointerUpHandler);
+    viewport.addEventListener('pointercancel', pointerUpHandler);
+    viewport.addEventListener('pointerout', pointerUpHandler);
+    
+    viewport.addEventListener('wheel', e => {
+        e.preventDefault();
+        zoomToPoint(e.clientX, e.clientY, -e.deltaY * 0.001);
+    }, { passive: false });
+}
+
+function zoomToPoint(cx, cy, factor) {
+    const newScale = Math.min(Math.max(mapState.scale + factor, MIN_SCALE), MAX_SCALE);
+    const scaleRatio = newScale / mapState.scale;
+    mapState.x = cx - (cx - mapState.x) * scaleRatio;
+    mapState.y = cy - (cy - mapState.y) * scaleRatio;
+    mapState.scale = newScale;
+    updateTransform();
+}
+
+function adjustZoom(amount) { zoomToPoint(window.innerWidth / 2, window.innerHeight / 2, amount); }
+
+function updateTransform() {
+    world.style.transform = `translate(${mapState.x}px, ${mapState.y}px) scale(${mapState.scale})`;
+}
+
+function resetView() {
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+    
+    // Better starting zoom since the map is now denser
+    let initialScale = winW < 768 ? 0.35 : 0.6; 
+    
+    mapState.x = (winW / 2) - (CENTER_X * initialScale);
+    mapState.y = (winH / 2) - (CENTER_Y * initialScale);
+    mapState.scale = initialScale;
+    updateTransform();
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
