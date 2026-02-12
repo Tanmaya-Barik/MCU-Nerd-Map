@@ -14,7 +14,7 @@
             --p2-bg: #330000; --p2-border: #DC3545; /* Reality */
             --p3-bg: #002200; --p3-border: #28A745; /* Time */
             --p4-bg: #220033; --p4-border: #9370DB; /* Power/Multiverse */
-            --p5-bg: #331A00; --p5-border: #FF8C00; /* Soul/Kang (Orange) */
+            --p5-bg: #331A00; --p5-border: #FF8C00; /* Soul/Orange */
             
             /* Specific Types */
             --shows-bg: #332200; --shows-border: #FFC107; /* Mind Stone / Series */
@@ -258,7 +258,7 @@
                 <div class="legend-item"><div class="dot" style="background:var(--p2-bg); border-color:var(--p2-border);"></div>Phase 2 (Reality)</div>
                 <div class="legend-item"><div class="dot" style="background:var(--p3-bg); border-color:var(--p3-border);"></div>Phase 3 (Time)</div>
                 <div class="legend-item"><div class="dot" style="background:var(--p4-bg); border-color:var(--p4-border);"></div>Phase 4 (Multiverse)</div>
-                <div class="legend-item"><div class="dot" style="background:var(--p5-bg); border-color:var(--p5-border);"></div>Phase 5 (Kang/Soul)</div>
+                <div class="legend-item"><div class="dot" style="background:var(--p5-bg); border-color:var(--p5-border);"></div>Phase 5 (Doomsday)</div>
                 <div class="legend-item"><div class="dot" style="background:var(--shows-bg); border-color:var(--shows-border);"></div>Disney+ Series</div>
                 <div class="legend-item"><div class="dot" style="background:var(--postcredit-bg); border-color:var(--postcredit-border); border-style:dashed;"></div>Post-Credit / Lore</div>
                 
@@ -387,7 +387,7 @@ const mcuData = {
         ]},
 
         // PHASE 5
-        { id: "p5", type: "phase", styleClass: "p5", title: "Phase 5<br>The Kang Dynasty Builds", children: [
+        { id: "p5", type: "phase", styleClass: "p5", title: "Phase 5<br>The Doomsday Build", children: [
             { id: "m39", type: "sub", styleClass: "movie p5", title: "Ant-Man: Quantumania", details: ["Kang the Conqueror", "MODOK"], children: [
                 { id: "c39", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Council of Kangs assembles", "Loki & Mobius find Victor Timely"] }]},
             { id: "m40", type: "sub", styleClass: "movie p5", title: "Guardians of the Galaxy Vol. 3", details: ["High Evolutionary", "Rocket's past"], children: [
@@ -407,15 +407,17 @@ const mcuData = {
             { id: "m47", type: "sub", styleClass: "movie shows", title: "Agatha All Along", details: ["Witches' Road", "Teen is Wiccan"], children: [
                 { id: "c47", type: "side", styleClass: "postcredit", title: "Lore", details: ["Agatha becomes a ghost guide for Billy"] }]},
             { id: "m48", type: "sub", styleClass: "movie p5", title: "Captain America: Brave New World", details: ["Sam Wilson Cap", "Red Hulk", "Adamantium"], children: [
-                { id: "c48", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["President Ross is locked in the Raft; Val pays him a visit"] }]},
+                { id: "c48", type: "side", styleClass: "postcredit", title: "Lore", details: ["President Ross is locked in the Raft; Val pays him a visit"] }]},
             { id: "m49", type: "sub", styleClass: "movie shows", title: "Daredevil: Born Again", details: ["Matt Murdock vs Mayor Fisk"], children: [
-                { id: "c49", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Fisk consolidates power; Punisher continues his crusade"] }]},
+                { id: "c49", type: "side", styleClass: "postcredit", title: "Lore", details: ["Fisk consolidates power; Punisher continues his crusade"] }]},
             { id: "m50", type: "sub", styleClass: "movie p5", title: "Thunderbolts*", details: ["Yelena, Bucky, US Agent", "Sentry"], children: [
-                { id: "c50", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["The team goes rogue, severing ties with Valentina"] }]},
+                { id: "c50", type: "side", styleClass: "postcredit", title: "Lore", details: ["The team goes rogue, severing ties with Valentina"] }]},
+            { id: "m53", type: "sub", styleClass: "movie p5", title: "The Fantastic Four: First Steps", details: ["Reed, Sue, Johnny, Ben", "Retro-Futuristic 60s", "Galactus"], children: [
+                { id: "c53", type: "side", styleClass: "postcredit", title: "Lore", details: ["The team creates a bridge to the 616 Universe; Doctor Doom emerges"] }]},
             { id: "m51", type: "sub", styleClass: "movie shows", title: "Ironheart", details: ["Riri Williams", "Magic vs Tech"], children: [
-                { id: "c51", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Rhodey contacts Riri regarding stolen Stark Tech (Armor Wars)"] }]},
+                { id: "c51", type: "side", styleClass: "postcredit", title: "Lore", details: ["Rhodey contacts Riri regarding stolen Stark Tech (Armor Wars)"] }]},
             { id: "m52", type: "sub", styleClass: "movie shows", title: "Wonder Man", details: ["Simon Williams", "Hollywood Superhero"], children: [
-                { id: "c52", type: "side", styleClass: "postcredit", title: "Post-Credit", details: ["Simon fully embraces his public superhero persona on a movie set"] }]}
+                { id: "c52", type: "side", styleClass: "postcredit", title: "Lore", details: ["Simon fully embraces his public superhero persona on a movie set"] }]}
         ]}
     ]
 };
